@@ -51,7 +51,7 @@ will be illustrated by boxplots.
 
 
 # Implementation and Results 
-## R codes for conducting experiments
+## R code for conducting experiments
 ```{r}
 n <- c(100, 1000, 10000)
 t <- c(0,0.67,0.84,1.28,1.65,2.32,2.58,3.09,3.72)
@@ -76,9 +76,9 @@ rownames(sum.results) <- c("true","n=100","n=1000","n=10000")
 ```
 
 ## Results 
-### Tables of mean estimation values
+### Tables of averaged estimation of probability
 
-The following two tables including the results averaged from 100 repetitions for each situation. By comparing the results of the 2nd, 3rd and 4th row with the 1st row, we can find that larger the sample size, smaller the difference between the approximated probability and the true probability.
+The following two tables including the results averaged from 100 repetitions for each situation. By comparing the results of the 2nd, 3rd and 4th row with the 1st row, we can find that in general, larger the sample size, smaller the difference between the approximated probability and the true probability.
 
 ```{r}
 # table
@@ -93,7 +93,9 @@ knitr::kable(sum.results[,-c(1:5)], booktabs = TRUE,
 
 ### Box plots of bias at all $t$
 The following three boxplots show the bias under different situations. For each plot, we consider three $t$
-values. And for each $t$ value, the black boxplot is the one for $n=100$, the gray one is for $n=1000$ and the white one is for $n=10000$. 
+values. And for each $t$ value, the black boxplot is the one for $n=100$, the gray one is for $n=1000$ and the white one is for $n=10000$. From those boxplots, we can get an overview of the change of the approximate efficiency along with the increasing of sample size and $t$ value. 
+
+By comparing three boxplots corresponding to three different sample size for one $t$ value, we can find that the estimation bias get closer to 0 when the sample size increases from 100 to 10000. And the distribution of bias become more and more concentrated on 0. 
 
 
 ```{r}
@@ -122,7 +124,7 @@ prgdata1 <- data.frame(b=factor(f1),
 
 #postscript(paste("1to3.eps",sep=""), width = 4, height = 4,horizontal=FALSE)
 ggplot(aes(y = PRG, x = b, fill = Correlation), data = prgdata1) +
-  geom_boxplot(notch=TRUE,notchwidth=0.3,outlier.size=2,outlier.shape=1) +
+  geom_boxplot(notch=FALSE,notchwidth=0.3,outlier.size=2,outlier.shape=1) +
   scale_fill_manual(name = "Correlation", 
                     values = c("grey50", "grey75","white"))+
   ylab("Bias") + 
@@ -147,7 +149,7 @@ prgdata2 <- data.frame(b=factor(f3),
 
 #postscript(paste("4to5.eps",sep=""), width = 4, height = 4,horizontal=FALSE
 ggplot(aes(y = PRG, x = b, fill = Correlation), data = prgdata2) +
-  geom_boxplot(notch=TRUE,notchwidth=0.3,outlier.size=2,outlier.shape=1) +
+  geom_boxplot(notch=FALSE,notchwidth=0.3,outlier.size=2,outlier.shape=1) +
   scale_fill_manual(name = "Correlation", 
                     values = c("grey50", "grey75","white"))+
   ylab("Bias") + 
@@ -181,6 +183,37 @@ ggplot(aes(y = PRG, x = b, fill = Correlation), data = prgdata3) +
   geom_hline(aes(yintercept=0), colour="black", linetype="dashed")
 
 ```
+
+# Some important quantities in R
+## .Machine$double.xmin
+It is the smallest non-zero normalized floating-point number. 
+```{r}
+.Machine$double.xmin
+2^(-1022)*(1+0)
+```
+
+## .Machine$double.xmax
+It is the largest normalized floating-point number. 
+```{r}
+.Machine$double.xmax
+2^(1023)*(1+(1-2^(-52))) 
+```
+
+## .Machine$double.eps
+It is the smallest positive floating-point number $x$ such that $1+x \neq 1$. 
+```{r}
+.Machine$double.eps
+2^(-52)
+```
+
+## .Machine$double.neg.eps
+It is a small positive floating-point number $x$ such that $1-x \neq 1$.
+```{r}
+.Machine$double.neg.eps
+2^(-53)
+```
+
+
 
 
 
