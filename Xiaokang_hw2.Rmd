@@ -1,5 +1,5 @@
 ---
-title: "Use the Monte Carlo method to approximate $N(0,1)$"
+title: "Use the Monte Carlo method to approximate the distribution of $N(0,1)$"
 # subtitle: "possible subtitle goes here"
 author:
   - Xiaokang Liu
@@ -10,7 +10,7 @@ fontsize: 11pt
 output:
   bookdown::pdf_document2
 abstract: |
-    This report aims to record a small experiment to use the Monte Carlo method to approximate the cumulative distribution function of the standard normal distribution. The results will be displayed in tables and graphs.
+    This report includes a small experiment to use the Monte Carlo method to approximate the cumulative distribution function of the standard normal distribution. The results will be displayed in tables and graphs.
 ---
 
 
@@ -47,11 +47,11 @@ by
     \widehat \Psi(t)=\frac{1}{n}\sum_{i=1}^n I(X_i \leq t),
 \end{align}
 where $X_i$'s are i.i.d. $N(0,1)$ variables. Experiments with the approximation at $n \in \{10^2, 10^3, 10^4\}$ at $t \in \{0,0.67,0.84,1.28,1.65,2.32,2.58,3.09,3.72 \}$ will be displayed by a table. The experiment will be repeated for 100 times. The bias at all $t$
-will be showed in some boxplots. 
+will be illustrated by boxplots. 
 
 
 # Implementation and Results 
-## R codes of conducting experiments
+## R codes for conducting experiments
 ```{r}
 n <- c(100, 1000, 10000)
 t <- c(0,0.67,0.84,1.28,1.65,2.32,2.58,3.09,3.72)
@@ -64,7 +64,7 @@ for (i in 1:100){
   }
 }
 
-# summarize the results from 100 repeatations
+# summarize the results from 100 repetitions
 sum.results <- matrix(nrow = 4, ncol = 9)
 sum.results[1,] <- pnorm(t)
 sum.results[2,] <- apply(results[,1,], 2, mean)
@@ -78,7 +78,7 @@ rownames(sum.results) <- c("true","n=100","n=1000","n=10000")
 ## Results 
 ### Tables of mean estimation values
 
-The following two tables including the results averaged from 100 repetations for each situation. By comparing the results of the 2, 3 and 4 row with the 1st row, we can find that larger the sample size, smaller the difference between the approximated probability and the true probability.
+The following two tables including the results averaged from 100 repetitions for each situation. By comparing the results of the 2nd, 3rd and 4th row with the 1st row, we can find that larger the sample size, smaller the difference between the approximated probability and the true probability.
 
 ```{r}
 # table
@@ -92,6 +92,9 @@ knitr::kable(sum.results[,-c(1:5)], booktabs = TRUE,
 
 
 ### Box plots of bias at all $t$
+The following three boxplots show the bias under different situations. For each plot, we consider three $t$
+values. And for each $t$ value, the black boxplot is the one for $n=100$, the gray one is for $n=1000$ and the white one is for $n=10000$. 
+
 
 ```{r}
 # get the bias
@@ -142,7 +145,7 @@ prgdata2 <- data.frame(b=factor(f3),
                       Correlation=factor(f2),
                       PRG=prg2,geom="point")
 
-#postscript(paste("1to3.eps",sep=""), width = 4, height = 4,horizontal=FALSE
+#postscript(paste("4to5.eps",sep=""), width = 4, height = 4,horizontal=FALSE
 ggplot(aes(y = PRG, x = b, fill = Correlation), data = prgdata2) +
   geom_boxplot(notch=TRUE,notchwidth=0.3,outlier.size=2,outlier.shape=1) +
   scale_fill_manual(name = "Correlation", 
@@ -166,7 +169,7 @@ prgdata3 <- data.frame(b=factor(f4),
                       Correlation=factor(f2),
                       PRG=prg3,geom="point")
 
-#postscript(paste("1to3.eps",sep=""), width = 4, height = 4,horizontal=FALSE)
+#postscript(paste("7to9.eps",sep=""), width = 4, height = 4,horizontal=FALSE)
 ggplot(aes(y = PRG, x = b, fill = Correlation), data = prgdata3) +
   geom_boxplot(notch=FALSE,notchwidth=0.3,outlier.size=2,outlier.shape=1) +
   scale_fill_manual(name = "Correlation", 
@@ -177,7 +180,6 @@ ggplot(aes(y = PRG, x = b, fill = Correlation), data = prgdata3) +
   guides(fill=FALSE)+
   geom_hline(aes(yintercept=0), colour="black", linetype="dashed")
 
-dev.off()
 ```
 
 
