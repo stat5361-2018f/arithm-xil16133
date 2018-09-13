@@ -37,7 +37,7 @@ knitr::opts_chunk$set(fig.width = 5, fig.height = 4, dpi = 300,
 ```
 
 
-# Introduction {#sec:intro}
+# Introduction 
 Consider approximation of the distribution function of $N(0,1)$,
 \begin{align}
     \Psi(t)=\int_{-\infty}^t \frac{1}{\sqrt{2\pi}}e^{-y^2/2}dy,
